@@ -1,0 +1,21 @@
+{
+    "manifest_version": 2,
+
+    "name": "Productive You",
+    "description": "This extension aims at improving the productivity of the user",
+    "version": "0.0.1",
+
+    "icons":{"128": "images/icon.png"},
+
+    "background": {
+        "scripts": ["js/background.js"]
+    },
+
+    "browser_action": {
+        "default_icon": "images/icon.png",
+        "default_popup": "popup.html"
+    },
+    "permissions": [
+        "tabs"
+    ]
+}

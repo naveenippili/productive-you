@@ -1,4 +1,4 @@
 $(document).ready(function(){
-    var activeTab = chrome.extension.getBackgroundPage().getActiveTab();
-    $("#popup-content").append("Active Tab: " + activeTab);
+    var activeWebsite = chrome.extension.getBackgroundPage().getActiveWebsite();
+    $("#popup-content").append("Active Website: " + activeWebsite);
 });

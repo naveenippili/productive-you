@@ -1,4 +1,32 @@
 body {
-    min-width: 357px;
+    min-width: 350px;
     overflow-x: hidden;
+    font-family: Arial;
+}
+
+.content-box {
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
+}
+
+#time-spent-table {
+    margin: 5px 0px;
+    border-collapse: collapse;
+    border: 1px solid #927F33;
+    width: 100%;
+}
+
+#time-spent-table th, #time-spent-table td {
+    text-align: left;
+    border: 1px solid #927F33;
+    padding: 2px 5px;
+}
+
+#time-spent-table th {
+    color: #fff;
+    background-color: #B38F03;
+}
+
+#time-spent-table tr:nth-child(odd) {
+    background-color: #F3E4BF;
 }

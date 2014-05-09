@@ -14,17 +14,23 @@ function getActiveWebsite() {
     return extractDomain(activeTabUrl);
 }
 
-// Updating the ActiveTabUrl during initialization
-updateActiveTabUrl();
+startUp();
 
-// Registering for an interval of 1s to update the time map
-window.setInterval(intervalListener, 1000);
-function intervalListener () {
+function startUp() {
+    // Updating the ActiveTabUrl during initialization
+    updateActiveTabUrl();
+
+    // Register Events
+    registerEvents();
+}
+
+// Listener for the timer
+function intervalListener() {
     updateTimeMap();
 }
 
 // Updates the timeMap
-function updateTimeMap () {
+function updateTimeMap() {
     var currDomain = getActiveWebsite();
     if (timeMap[currDomain] == undefined) {
         timeMap[currDomain] = 1;
@@ -33,22 +39,33 @@ function updateTimeMap () {
     }
 }
 
-// Registering for onActivated event
-// This is fired when the active tab changes
-chrome.tabs.onActivated.addListener(function (activeInfo) {
-    updateActiveTabUrl();
-});
+function registerEvents() {
+    // Registering for onActivated event
+    // This is fired when the active tab changes
+    chrome.tabs.onActivated.addListener(function(activeInfo) {
+        updateActiveTabUrl();
+    });
 
-// Registering for onChanged event
-// This is fired when the url of a tab changes
-chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-    updateActiveTabUrl();
-});
+    // Registering for onChanged event
+    // This is fired when the url of a tab changes
+    chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
+        updateActiveTabUrl();
+    });
+
+    // Registering for onFocusChanged event
+    // This is fired when the active chrome window is changed.
+    chrome.windows.onFocusChanged.addListener(function(windowId) {
+        updateActiveTabUrl();
+    });
+
+    // Registering for an interval of 1s
+    window.setInterval(intervalListener, 1000);
+}
 
 // Finds the current tab in the current window
 // Updates the activeTabUrl global variable
 function updateActiveTabUrl() {
-    chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         if (tabs.length < 1) {
             activeTabUrl = null;
         } else {

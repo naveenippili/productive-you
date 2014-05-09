@@ -3,7 +3,7 @@
 
     "name": "Productive You",
     "description": "This extension aims at improving the productivity of the user",
-    "version": "0.0.7",
+    "version": "0.0.8",
 
     "icons":{"128": "images/icon.png"},
 

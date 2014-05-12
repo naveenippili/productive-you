@@ -4,6 +4,9 @@ var activeTabUrl = "";
 // Global time expenditure map
 var timeMap = {};
 
+// This variable stores when did the timeMap got refreshed last
+var lastRefreshTimeStamp;
+
 // Returns a map of time spent by the user on various websites
 function getTimeExpenditureMap() {
     return timeMap;
@@ -16,27 +19,15 @@ function getActiveWebsite() {
 
 startUp();
 
+// Do all the startup tasks
 function startUp() {
     // Updating the ActiveTabUrl during initialization
     updateActiveTabUrl();
 
     // Register Events
     registerEvents();
-}
 
-// Listener for the timer
-function intervalListener() {
-    updateTimeMap();
-}
-
-// Updates the timeMap
-function updateTimeMap() {
-    var currDomain = getActiveWebsite();
-    if (timeMap[currDomain] == undefined) {
-        timeMap[currDomain] = 1;
-    } else {
-        timeMap[currDomain] += 1;
-    }
+    lastRefreshTimeStamp = new Date();
 }
 
 function registerEvents() {
@@ -60,6 +51,45 @@ function registerEvents() {
 
     // Registering for an interval of 1s
     window.setInterval(intervalListener, 1000);
+}
+
+// Listener for the timer
+function intervalListener() {
+    updateTimeMap();
+    checkDateAndRefreshTimeMap();
+}
+
+// Updates the timeMap
+function updateTimeMap() {
+    var currDomain = getActiveWebsite();
+    if (timeMap[currDomain] == undefined) {
+        timeMap[currDomain] = 1;
+    } else {
+        timeMap[currDomain] += 1;
+    }
+}
+
+// Returns the time of the day in which the stats have to refresh
+function getRefreshTimePreference() {
+    return {hours: 3, minutes: 0};
+}
+
+// Returns the last time when the timeMap has been refresehed
+function getLastRefreshTime() {
+    return lastRefreshTimeStamp;
+}
+
+// Checks whether its time to refresh the timeMap and refreshes it
+function checkDateAndRefreshTimeMap() {
+    var refreshTimePref = getRefreshTimePreference();
+    var timeToRefresh = new Date();
+    timeToRefresh.setHours(refreshTimePref.hours);
+    timeToRefresh.setMinutes(refreshTimePref.minutes);
+    timeToRefresh.setSeconds(0);
+    if (new Date() > timeToRefresh && getLastRefreshTime() < timeToRefresh) {
+        timeMap = {};
+        lastRefreshTimeStamp = new Date();
+    }
 }
 
 // Finds the current tab in the current window

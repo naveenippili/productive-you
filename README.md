@@ -16,8 +16,9 @@ A chrome extension which is aimed at increasing the productivity of the user.
 * The extension should start running
 
 ####TODO:
-* Find all the events on which the activeTabUrl needs to be updated
-* Check if the currentWindow is in focus or not while updating the timeSpent
-* Reset the timeMap everyday at some time
-* Store the data using the chrome.storage api
-* Persist user preferences
+* Disable timer when chrome is out of focus
+* Store the tracking data using the chrome.storage api like
+    * timeMap
+    * lastRefreshTime
+* Persist user preferences like
+    * timeToRefresh

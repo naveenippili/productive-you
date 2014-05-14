@@ -1,6 +1,9 @@
 // Global variable to store the active tab url
 var activeTabUrl = "";
 
+// Global variable to track whether the user is active or not
+var isUserActive;
+
 // Global time expenditure map
 var timeMap = {};
 
@@ -17,6 +20,11 @@ function getActiveWebsite() {
     return extractDomain(activeTabUrl);
 }
 
+// Returns whether the user is active right now or not
+function isUserActiveNow() {
+    return isUserActive;
+}
+
 startUp();
 
 // Do all the startup tasks
@@ -27,7 +35,12 @@ function startUp() {
     // Register Events
     registerEvents();
 
+    // Setting it to the initialization date by default
+    // TODO: user chrome.storage api here
     lastRefreshTimeStamp = new Date();
+
+    // Setting isUserActive as true while starting up
+    isUserActive = true;
 }
 
 function registerEvents() {
@@ -46,6 +59,13 @@ function registerEvents() {
     // Registering for onFocusChanged event
     // This is fired when the active chrome window is changed.
     chrome.windows.onFocusChanged.addListener(function(windowId) {
+        // This happens if all the windows are out of focus
+        // Using this condition to infer that the user is inactive
+        if (windowId === chrome.windows.WINDOW_ID_NONE) {
+            isUserActive = false;
+        } else {
+            isUserActive = true;
+        }
         updateActiveTabUrl();
     });
 
@@ -62,10 +82,13 @@ function intervalListener() {
 // Updates the timeMap
 function updateTimeMap() {
     var currDomain = getActiveWebsite();
-    if (timeMap[currDomain] == undefined) {
-        timeMap[currDomain] = 1;
-    } else {
-        timeMap[currDomain] += 1;
+    // Incrementing the timeSpent only if the user is active
+    if (isUserActiveNow()) {
+        if (timeMap[currDomain] == undefined) {
+            timeMap[currDomain] = 1;
+        } else {
+            timeMap[currDomain] += 1;
+        }
     }
 }
 

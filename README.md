@@ -5,7 +5,9 @@ A chrome extension which is aimed at increasing the productivity of the user.
 
 ####Features:
 * Tracks the time you have spent on various websites. 
-* Displays the top 10 websites on which you have spent your time.
+* Displays the top 10 websites on which you have spent your time on that day.
+* Disables the timer automatically when the user is not using the browser.
+
 
 ####How To Test It:
 * Clone this or your forked repo into your machine
@@ -16,7 +18,6 @@ A chrome extension which is aimed at increasing the productivity of the user.
 * The extension should start running
 
 ####TODO:
-* Disable timer when chrome is out of focus
 * Store the tracking data using the chrome.storage api like
     * timeMap
     * lastRefreshTime
